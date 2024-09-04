@@ -1,0 +1,155 @@
+.vr-youtube {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 24px;
+  margin: 0 20px;
+}
+
+.search-container {
+  display: flex;
+  flex-grow: 1;
+  max-width: 600px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 25px 0 0 25px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.search-button {
+  background-color: #f8f8f8;
+  border: 2px solid #ccc;
+  border-left: none;
+  border-radius: 0 25px 25px 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  float: left;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.nav-button.active {
+  background-color: #f1f1f1;
+}
+
+.nav-button svg {
+  margin-right: 10px;
+}
+
+.main-content {
+  margin-left: 220px;
+}
+
+.categories {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.category-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.category-button.active {
+  background-color: #030303;
+  color: white;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.video-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.video-card:hover {
+  transform: scale(1.05);
+}
+
+.video-thumbnail {
+  height: 140px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.video-title {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.video-info {
+  font-size: 14px;
+  color: #606060;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    float: none;
+    margin-bottom: 20px;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .nav-button {
+    flex-direction: column;
+    font-size: 14px;
+  }
+
+  .nav-button svg {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}

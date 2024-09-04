@@ -1,95 +1,72 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState } from 'react';
+import './page.css';
+import { Search, House, ChartNoAxesCombined, Vote, Menu } from 'lucide-react';
 
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  const categories = ['All', 'Music', 'Gaming', 'News', 'Live', 'Sports'];
+  const videos = [
+    { title: 'VR Gaming Experiences', views: '1.2M views', channel: 'VR Enthusiast' },
+    { title: 'Learn React in 2024', views: '800K views', channel: 'Code Master' },
+    { title: 'Relaxing Nature Sounds', views: '3M views', channel: 'Zen Channel' },
+    { title: 'Space Exploration News', views: '500K views', channel: 'Science Today' },
+  ];
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className='vr-youtube'>
+      <header className='header'>
+        <button className='icon-button menu-button'>
+          <Menu size={24} />
+        </button>
+        <h1 className='logo'>VR YouTube</h1>
+        <div className='search-container'>
+          <input type='text' placeholder='Search' className='search-input' />
+          <button className='icon-button search-button'>
+            <Search size={24} />
+          </button>
         </div>
-      </div>
+      </header>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <main className='main-content'>
+        <div className='categories'>
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`category-button ${category === activeCategory ? 'active' : ''}`}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+        <nav className='sidebar'>
+          <button className='nav-button active'>
+            <House size={24} /> Home
+          </button>
+          <button className='nav-button'>
+            <ChartNoAxesCombined size={24} /> Trending
+          </button>
+          <button className='nav-button'>
+            <Vote size={24} /> Subscriptions
+          </button>
+        </nav>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <div className='video-grid'>
+          {videos.map((video, index) => (
+            <div key={index} className='video-card'>
+              <div className='video-thumbnail'></div>
+              <h3 className='video-title'>{video.title}</h3>
+              <p className='video-info'>
+                {video.channel} • {video.views}
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
   );
 }
