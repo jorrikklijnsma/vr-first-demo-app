@@ -12,34 +12,104 @@ import {
   ThumbsDown,
   Share,
   Save,
+  ChevronRight,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState('home');
+  const [navigationPath, setNavigationPath] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const categories = ['All', 'Music', 'Gaming', 'News', 'Live', 'Sports'];
-  const videos = [
-    { id: 1, title: 'VR Gaming Experiences', views: '1.2M views', channel: 'VR Enthusiast' },
-    { id: 2, title: 'Learn React in 2024', views: '800K views', channel: 'Code Master' },
-    { id: 3, title: 'Relaxing Nature Sounds', views: '3M views', channel: 'Zen Channel' },
-    { id: 4, title: 'Space Exploration News', views: '500K views', channel: 'Science Today' },
+  const categories = [
+    { id: 'entertainment', name: 'Entertainment', icon: '🎭' },
+    { id: 'education', name: 'Education', icon: '🎓' },
+    { id: 'technology', name: 'Technology', icon: '💻' },
+    { id: 'sports', name: 'Sports', icon: '⚽' },
   ];
+
+  const subcategories = {
+    entertainment: [
+      { id: 'movies', name: 'Movies', icon: '🎬' },
+      { id: 'music', name: 'Music', icon: '🎵' },
+      { id: 'gaming', name: 'Gaming', icon: '🎮' },
+    ],
+    education: [
+      { id: 'science', name: 'Science', icon: '🔬' },
+      { id: 'history', name: 'History', icon: '📜' },
+      { id: 'languages', name: 'Languages', icon: '🗣️' },
+    ],
+    technology: [
+      { id: 'programming', name: 'Programming', icon: '👨‍💻' },
+      { id: 'gadgets', name: 'Gadgets', icon: '📱' },
+      { id: 'ai', name: 'Artificial Intelligence', icon: '🤖' },
+    ],
+    sports: [
+      { id: 'football', name: 'Football', icon: '🏈' },
+      { id: 'basketball', name: 'Basketball', icon: '🏀' },
+      { id: 'tennis', name: 'Tennis', icon: '🎾' },
+    ],
+  };
+
+  const videos = [
+    {
+      id: 1,
+      title: 'Introduction to React',
+      category: 'programming',
+      views: '1.2M views',
+      channel: 'Code Master',
+    },
+    {
+      id: 2,
+      title: 'History of Ancient Rome',
+      category: 'history',
+      views: '800K views',
+      channel: 'History Buff',
+    },
+    {
+      id: 3,
+      title: 'Top 10 Sci-Fi Movies',
+      category: 'movies',
+      views: '3M views',
+      channel: 'Film Fanatic',
+    },
+    {
+      id: 4,
+      title: 'Learning Spanish Basics',
+      category: 'languages',
+      views: '500K views',
+      channel: 'Polyglot Pro',
+    },
+    // Add more video objects as needed
+  ];
+
+  const handleCategoryClick = (category) => {
+    setNavigationPath([...navigationPath, category]);
+    setCurrentPage('subcategory');
+  };
+
+  const handleSubcategoryClick = (subcategory) => {
+    setNavigationPath([...navigationPath, subcategory]);
+    setCurrentPage('videos');
+  };
 
   const handleVideoClick = (video) => {
     setSelectedVideo(video);
     setCurrentPage('detail');
-    document.startViewTransition(() => {
-      window.scrollTo(0, 0);
-    });
   };
 
   const handleBackClick = () => {
-    setCurrentPage('home');
-    document.startViewTransition(() => {
-      setSelectedVideo(null);
-    });
+    if (navigationPath.length > 0) {
+      const newPath = [...navigationPath];
+      newPath.pop();
+      setNavigationPath(newPath);
+      setCurrentPage(
+        newPath.length === 0 ? 'home' : newPath.length === 1 ? 'subcategory' : 'videos'
+      );
+    } else {
+      setCurrentPage('home');
+    }
+    setSelectedVideo(null);
   };
 
   return (
@@ -70,22 +140,49 @@ export default function Home() {
       </nav>
 
       <main className='main-content'>
-        {currentPage === 'home' && (
-          <>
-            <div className='categories'>
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  className={`category-button ${category === activeCategory ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+        {currentPage !== 'home' && (
+          <button className='back-button' onClick={handleBackClick}>
+            <ArrowLeft size={24} /> Back
+          </button>
+        )}
 
-            <div className='video-grid'>
-              {videos.map((video) => (
+        {currentPage === 'home' && (
+          <div className='category-grid'>
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className='category-card'
+                onClick={() => handleCategoryClick(category)}
+              >
+                <span className='category-icon'>{category.icon}</span>
+                <span className='category-name'>{category.name}</span>
+                <ChevronRight size={24} className='chevron-icon' />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {currentPage === 'subcategory' && (
+          <div className='category-grid'>
+            {subcategories[navigationPath[navigationPath.length - 1].id].map((subcategory) => (
+              <button
+                key={subcategory.id}
+                className='category-card'
+                onClick={() => handleSubcategoryClick(subcategory)}
+              >
+                <span className='category-icon'>{subcategory.icon}</span>
+                <span className='category-name'>{subcategory.name}</span>
+                <ChevronRight size={24} className='chevron-icon' />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {currentPage === 'videos' && (
+          <div className='video-grid'>
+            {videos
+              .filter((video) => video.category === navigationPath[navigationPath.length - 1].id)
+              .map((video) => (
                 <div key={video.id} className='video-card' onClick={() => handleVideoClick(video)}>
                   <div className='video-thumbnail'></div>
                   <h3 className='video-title'>{video.title}</h3>
@@ -94,15 +191,11 @@ export default function Home() {
                   </p>
                 </div>
               ))}
-            </div>
-          </>
+          </div>
         )}
 
         {currentPage === 'detail' && selectedVideo && (
           <div className='video-detail'>
-            <button className='back-button' onClick={handleBackClick}>
-              Back to Home
-            </button>
             <div className='video-player'></div>
             <h2 className='detail-title'>{selectedVideo.title}</h2>
             <p className='detail-info'>
