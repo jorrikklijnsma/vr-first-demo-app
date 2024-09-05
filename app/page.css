@@ -14,6 +14,21 @@
 .logo {
   font-size: 24px;
   margin: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  svg {
+    height: 24px;
+    width: auto;
+  }
+}
+
+.header-input-container {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .search-container {
